@@ -1,5 +1,3 @@
-export {};
-
 import express, { ErrorRequestHandler } from "express";
 
 const logger = require("morgan");

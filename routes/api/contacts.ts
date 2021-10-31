@@ -1,5 +1,3 @@
-export {};
-
 import * as yup from "yup";
 
 import httpErrors, { BadRequest, NotFound } from "http-errors";
@@ -77,15 +75,12 @@ router.get("/:contactId", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const contactFromRequest: Contact = {
-      name: req.body.name as string,
-      email: req.body.email as string,
-      phone: req.body.phone as string,
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
     };
 
-    const validationResult = await validationSchema.validate(
-      contactFromRequest,
-      { abortEarly: false }
-    );
+    await validationSchema.validate(contactFromRequest, { abortEarly: false });
     const contact = await model.addContact(contactFromRequest);
     if (contact) {
       res.status(201);
@@ -118,7 +113,7 @@ router.put("/:contactId", async (req, res, next) => {
       throw new BadRequest("missing fields");
     }
 
-    const validationResult = await validationSchemaOptional.validate(body, {
+    await validationSchemaOptional.validate(body, {
       abortEarly: false,
     });
     const contact = await model.updateContact(req.params.contactId, body);
