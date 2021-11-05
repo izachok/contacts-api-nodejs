@@ -20,6 +20,7 @@ const validationSchema: yup.SchemaOf<Contact> = yup
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
         "Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +"
       ),
+    favorite: yup.bool().optional(),
   })
   .defined();
 
@@ -41,6 +42,7 @@ const validationSchemaOptional: yup.SchemaOf<Partial<Contact>> = yup
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
         "Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +"
       ),
+    favorite: yup.bool().optional(),
   })
   .defined();
 

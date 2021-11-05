@@ -29,4 +29,9 @@ router.put(
   controllerWrapper(contactsController.updateById)
 );
 
+router.patch(
+  "/:contactId/favorite",
+  controllerWrapper(contactsController.updateStatusContact)
+);
+
 module.exports = router;
