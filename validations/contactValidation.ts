@@ -1,10 +1,7 @@
 import * as yup from "yup";
 
-import Contact from "../model/types";
-
-const validationSchema: yup.SchemaOf<Contact> = yup
+const validationSchema = yup
   .object({
-    id: yup.string().optional(),
     name: yup
       .string()
       .required()
@@ -24,9 +21,8 @@ const validationSchema: yup.SchemaOf<Contact> = yup
   })
   .defined();
 
-const validationSchemaOptional: yup.SchemaOf<Partial<Contact>> = yup
+const validationSchemaOptional = yup
   .object({
-    id: yup.string().optional(),
     name: yup
       .string()
       .notRequired()
