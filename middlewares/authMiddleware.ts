@@ -20,10 +20,11 @@ const authenticate: RequestHandler = async (req, res, next) => {
   try {
     const { id } = jwt.verify(token, SECRET_KEY);
     const user = await UserModel.findById(id);
-    if (!user) {
+    if (!user || user.token !== token) {
       next(new Unauthorized("Not authorized"));
       return;
     }
+
     req.user = user;
     next();
   } catch (error: any) {
