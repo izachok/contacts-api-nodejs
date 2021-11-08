@@ -18,9 +18,8 @@ const signup: RequestHandler = async (req, res) => {
   newUser.setPassword(password);
   const result = await newUser.save();
 
-  //todo filter result without password and token
   res.status(201).json({
-    user: result,
+    user: result.getShortObject(),
   });
 };
 
@@ -40,10 +39,9 @@ const login: RequestHandler = async (req, res) => {
   user.token = token;
   await user.save();
 
-  //todo filter results
   res.json({
     token,
-    user,
+    user: user.getShortObject(),
   });
 };
 
@@ -62,8 +60,7 @@ const getCurrentUser: RequestHandler = async (req, res) => {
   const { _id } = req.user!;
   const user = await UserModel.findById(_id);
 
-  //todo filter response fields
-  res.json(user);
+  res.json(user?.getShortObject());
 };
 
 const updateSubscription: RequestHandler = async (req, res) => {
@@ -83,8 +80,7 @@ const updateSubscription: RequestHandler = async (req, res) => {
   }
   user.subscription = subscription;
   const result = await user.save();
-  //todo filter results
-  res.status(200).json(result);
+  res.status(200).json(result.getShortObject());
 };
 
 export { signup, login, logout, getCurrentUser, updateSubscription };

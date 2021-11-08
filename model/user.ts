@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 interface InstanceMethods {
   setPassword: (password: string) => void;
   comparePassword: (password: string) => Boolean;
+  getShortObject: () => Partial<User>;
 }
 
 const userSchema = new Schema<User, Model<User, {}, InstanceMethods>>({
@@ -35,6 +36,13 @@ userSchema.methods.setPassword = function (password) {
 
 userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
+};
+
+userSchema.methods.getShortObject = function () {
+  return {
+    email: this.email,
+    subscription: this.subscription,
+  };
 };
 
 const UserModel = model<User, Model<User, {}, InstanceMethods>>(
