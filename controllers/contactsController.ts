@@ -1,9 +1,10 @@
 import { BadRequest, Forbidden, NotFound } from "http-errors";
+import { ObjectId, Schema } from "mongoose";
 
 import { Contact } from "../model/types";
 import { ContactModel } from "../model/contact";
+import { ParsedUrlQuery } from "querystring";
 import { RequestHandler } from "express";
-import { Schema } from "mongoose";
 
 var mongoose = require("mongoose");
 
@@ -20,12 +21,48 @@ const checkRights = (
   }
 };
 
+interface QueryObject {
+  query: {
+    owner: ObjectId;
+    favorite?: boolean;
+  };
+  page: number;
+
+  limit: number;
+}
+
+const constructQueryObject = (query: any, userId: ObjectId) => {
+  const queryObject: QueryObject = {
+    query: {
+      owner: userId,
+    },
+    page: 1,
+    limit: 20,
+  };
+  let limit = parseInt(query.limit);
+  queryObject.limit =
+    isNaN(limit) || limit > queryObject.limit ? queryObject.limit : limit;
+
+  let pageNum = parseInt(query.page);
+  queryObject.page = isNaN(pageNum) ? 1 : pageNum;
+
+  let favorite: boolean | undefined = undefined;
+  if (query.favorite) {
+    favorite = query.favorite === "true";
+    queryObject.query.favorite = favorite;
+  }
+
+  return queryObject;
+};
+
 const getAll: RequestHandler = async (req, res, next) => {
   const { _id } = req.user!;
-  const contacts = await ContactModel.find({ owner: _id }).populate(
-    "owner",
-    "email"
-  );
+  const queryObject = constructQueryObject(req.query, _id!);
+
+  const contacts = await ContactModel.find(queryObject.query)
+    .skip(queryObject.limit * (queryObject.page - 1))
+    .limit(queryObject.limit)
+    .populate("owner", "email");
   res.json(contacts);
 };
 

@@ -1,6 +1,7 @@
-import { Conflict, Unauthorized } from "http-errors";
+import { BadRequest, Conflict, NotFound, Unauthorized } from "http-errors";
 
 import { RequestHandler } from "express";
+import { Subscription } from "../model/types";
 import { UserModel } from "../model/user";
 import jwt from "jsonwebtoken";
 
@@ -65,4 +66,25 @@ const getCurrentUser: RequestHandler = async (req, res) => {
   res.json(user);
 };
 
-export { signup, login, logout, getCurrentUser };
+const updateSubscription: RequestHandler = async (req, res) => {
+  const { _id } = req.user!;
+  const { subscription } = req.body;
+  if (subscription == undefined) {
+    throw new BadRequest("missing field subscription");
+  }
+  //check is value in enum
+  if (!Object.values(Subscription).includes(subscription)) {
+    throw new BadRequest("invalid subscription value");
+  }
+
+  const user = await UserModel.findById(_id);
+  if (!user) {
+    throw new NotFound("Not found");
+  }
+  user.subscription = subscription;
+  const result = await user.save();
+  //todo filter results
+  res.status(200).json(result);
+};
+
+export { signup, login, logout, getCurrentUser, updateSubscription };

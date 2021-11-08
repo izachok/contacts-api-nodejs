@@ -28,4 +28,10 @@ router.get(
   controllerWrapper(authController.getCurrentUser)
 );
 
+router.patch(
+  "/",
+  authenticate,
+  controllerWrapper(authController.updateSubscription)
+);
+
 module.exports = router;
