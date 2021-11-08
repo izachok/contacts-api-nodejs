@@ -57,4 +57,12 @@ const logout: RequestHandler = async (req, res) => {
   res.status(204).send();
 };
 
-export { signup, login, logout };
+const getCurrentUser: RequestHandler = async (req, res) => {
+  const { _id } = req.user!;
+  const user = await UserModel.findById(_id);
+
+  //todo filter response fields
+  res.json(user);
+};
+
+export { signup, login, logout, getCurrentUser };

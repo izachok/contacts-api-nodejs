@@ -22,4 +22,10 @@ router.post(
 
 router.post("/logout", authenticate, controllerWrapper(authController.logout));
 
+router.get(
+  "/current",
+  authenticate,
+  controllerWrapper(authController.getCurrentUser)
+);
+
 module.exports = router;
