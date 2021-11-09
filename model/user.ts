@@ -28,6 +28,9 @@ const userSchema = new Schema<User, Model<User, {}, InstanceMethods>>({
     type: String,
     default: null,
   },
+  avatarURL: {
+    type: String,
+  },
 });
 
 userSchema.methods.setPassword = function (password) {
@@ -42,6 +45,7 @@ userSchema.methods.getShortObject = function () {
   return {
     email: this.email,
     subscription: this.subscription,
+    avatarURL: this.avatarURL,
   };
 };
 
