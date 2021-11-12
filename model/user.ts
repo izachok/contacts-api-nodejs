@@ -31,6 +31,13 @@ const userSchema = new Schema<User, Model<User, {}, InstanceMethods>>({
   avatarURL: {
     type: String,
   },
+  verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+  },
 });
 
 userSchema.methods.setPassword = function (password) {
