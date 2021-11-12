@@ -22,4 +22,11 @@ router.post(
 
 router.post("/logout", authenticate, controllerWrapper(authController.logout));
 
+router.get(
+  "/verify/:verificationToken",
+  controllerWrapper(authController.verify)
+);
+
+router.post("/verify/", controllerWrapper(authController.repeatVerification));
+
 module.exports = router;

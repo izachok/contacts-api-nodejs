@@ -16,6 +16,8 @@ export interface User {
   subscription: Subscription;
   token?: string | null;
   avatarURL?: string;
+  verify?: boolean;
+  verificationToken?: string | null;
 }
 
 export enum Subscription {
